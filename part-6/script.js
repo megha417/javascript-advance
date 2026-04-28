@@ -204,16 +204,22 @@ EXERCISE 1: Validate Age Input
 ------------------------------
 Add validation to check that age is between 1 and 120.
 Show error message if invalid.
-
-HTML needed:
-<input type="number" id="age" placeholder="Your age">
-<div class="error-msg" id="age-error">Age must be 1-120</div>
+*/
 
 const ageInput = document.querySelector('#age');
+const ageError = document.querySelector('#age-error');
+
 ageInput.addEventListener('input', () => {
-    // Your code here
+    const age = parseInt(ageInput.value);
+    
+    if (isNaN(age) || age < 1 || age > 120) {
+        ageError.style.display = 'block';
+        ageInput.classList.add('invalid');
+    } else {
+        ageError.style.display = 'none';
+        ageInput.classList.remove('invalid');
+    }
 });
-*/
 
 
 /*
@@ -223,14 +229,19 @@ Username rules:
 - 3-20 characters
 - Only letters, numbers, and underscores
 - Must start with a letter
-
-Regex hint: /^[a-zA-Z][a-zA-Z0-9_]{2,19}$/
+*/
 
 function validateUsername(username) {
-    // Your code here
-    // Return true if valid, false if not
+    const regex = /^[a-zA-Z][a-zA-Z0-9_]{2,19}$/;
+    return regex.test(username);
 }
-*/
+
+// Test:
+console.log('abc:', validateUsername('abc'));           // true
+console.log('user123:', validateUsername('user123'));   // true
+console.log('123user:', validateUsername('123user'));   // false (starts with number)
+console.log('ab:', validateUsername('ab'));             // false (too short)
+console.log('user-name:', validateUsername('user-name')); // false (hyphen not allowed)
 
 
 /*
@@ -238,8 +249,23 @@ EXERCISE 3: Date Formatter
 --------------------------
 Format date input as MM/DD/YYYY as user types.
 Example: User types "12252023" -> shows "12/25/2023"
+*/
+
+const dateInput = document.querySelector('#date-input');
 
 dateInput.addEventListener('input', (e) => {
-    // Your code here
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    let formatted = '';
+    
+    if (value.length > 0) {
+        formatted += value.substring(0, 2);
+    }
+    if (value.length > 2) {
+        formatted += '/' + value.substring(2, 4);
+    }
+    if (value.length > 4) {
+        formatted += '/' + value.substring(4, 8);
+    }
+    
+    e.target.value = formatted;
 });
-*/
