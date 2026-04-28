@@ -156,6 +156,8 @@ setTimeout(() => console.log('C'), 0);
 console.log('D');
 
 Your answer: ___, ___, ___, ___
+
+Answer: A, D, C, B
 */
 
 
@@ -166,22 +168,30 @@ Create a stopwatch that counts UP instead of down.
 - Starts at 0
 - Increases every second
 - Can be started, stopped, and reset
+*/
 
 let stopwatchTime = 0;
 let stopwatchInterval = null;
 
 function startStopwatch() {
-    // Your code here
+    if (stopwatchInterval !== null) return;
+    stopwatchInterval = setInterval(() => {
+        stopwatchTime++;
+        console.log('Stopwatch:', stopwatchTime);
+    }, 1000);
 }
 
 function stopStopwatch() {
-    // Your code here
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
 }
 
 function resetStopwatch() {
-    // Your code here
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = null;
+    stopwatchTime = 0;
+    console.log('Stopwatch reset to 0');
 }
-*/
 
 
 /*
@@ -192,3 +202,23 @@ Use setInterval and toggle the visibility.
 
 Hint: element.style.visibility = 'hidden' or 'visible'
 */
+
+let blinkInterval = null;
+const blinkElement = document.querySelector('#blink-text');
+
+function startBlinking() {
+    if (blinkInterval !== null) return;
+    blinkInterval = setInterval(() => {
+        if (blinkElement.style.visibility === 'hidden') {
+            blinkElement.style.visibility = 'visible';
+        } else {
+            blinkElement.style.visibility = 'hidden';
+        }
+    }, 500);
+}
+
+function stopBlinking() {
+    clearInterval(blinkInterval);
+    blinkInterval = null;
+    blinkElement.style.visibility = 'visible';
+}
