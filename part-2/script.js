@@ -209,22 +209,29 @@ EXERCISE 1: Create Your Own Promise
 -----------------------------------
 Create a function that returns a Promise.
 It should resolve with "Hello!" after 1 second.
+*/
 
 function sayHello() {
     return new Promise((resolve, reject) => {
-        // Your code here
+        setTimeout(() => {
+            resolve('Hello!');
+        }, 1000);
     });
 }
 
 // Test it:
 sayHello().then(message => console.log(message));
-*/
 
 
 /*
 EXERCISE 2: Convert to async/await
 ----------------------------------
 Convert this .then() code to async/await:
+*/
+
+function step(num, delay) {
+    return new Promise(resolve => setTimeout(() => resolve(`Step ${num} done`), delay));
+}
 
 function fetchData() {
     return step(1, 1000)
@@ -239,9 +246,14 @@ function fetchData() {
 
 // Your async/await version:
 async function fetchDataAsync() {
-    // Your code here
+    const result1 = await step(1, 1000);
+    console.log(result1);
+    const result2 = await step(2, 1000);
+    console.log(result2);
 }
-*/
+
+// Test it:
+fetchDataAsync();
 
 
 /*
@@ -249,6 +261,7 @@ EXERCISE 3: Promise.all with Error
 ----------------------------------
 What happens if one promise in Promise.all fails?
 Test it:
+*/
 
 Promise.all([
     Promise.resolve('A'),
@@ -258,5 +271,4 @@ Promise.all([
 .then(results => console.log(results))
 .catch(error => console.log('Caught:', error));
 
-What gets logged? _______________
-*/
+// Answer: "Caught: Error!" - Promise.all fails fast on first rejection
