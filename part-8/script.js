@@ -79,7 +79,7 @@ function showToast(message, type = 'success') {
     toast.className = `toast ${type}`;
     toast.textContent = message;
     toastContainer.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    setTimeout(() => toast.remove(), 5000);
 }
 
 
@@ -444,6 +444,13 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         handleSave();
     }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        darkMode = !darkMode;
+        document.body.classList.toggle('dark-mode', darkMode);
+        darkModeBtn.textContent = darkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+        localStorage.setItem(THEME_KEY, JSON.stringify(darkMode));
+    }
 });
 
 const debouncedSearch = debounce(() => renderNotes(), 300);
@@ -502,10 +509,10 @@ EXERCISE 1: Add a New Category
 Add a new category called "shopping" to the Notes App.
 
 Steps:
-1. Find the noteCategory select element in index.html
-2. Add a new <option value="shopping">Shopping</option>
-3. Also add it to the filterCategory select
-4. Test by creating a note with the new category
+1. Find the noteCategory select element in index.html ✓
+2. Add a new <option value="shopping">Shopping</option> ✓
+3. Also add it to the filterCategory select ✓
+4. Test by creating a note with the new category ✓
 */
 
 
@@ -518,7 +525,7 @@ Change it to 5 seconds.
 Find this line in TOPIC 3:
     setTimeout(() => toast.remove(), 3000);
 
-Change 3000 to: _______________
+Change 3000 to: 5000 ✓
 */
 
 
@@ -532,8 +539,8 @@ Find the keydown event listener in TOPIC 11 and add:
 
 if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
     e.preventDefault();
-    // Your code to toggle dark mode
+    // Your code to toggle dark mode ✓
 }
 
-Hint: Look at how the darkModeBtn click handler works
+Hint: Look at how the darkModeBtn click handler works ✓
 */

@@ -312,11 +312,29 @@ Use POST to create a new comment.
 API: https://jsonplaceholder.typicode.com/comments
 
 Body should include: postId, name, email, body
+*/
 
 async function createComment(postId, name, email, body) {
-    // Your code here
+    const response = await fetch('https://jsonplaceholder.typicode.com/comments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            postId: postId,
+            name: name,
+            email: email,
+            body: body
+        })
+    });
+    
+    const data = await response.json();
+    console.log('Created comment:', data);
+    return data;
 }
-*/
+
+// Test:
+createComment(1, 'Test User', 'test@example.com', 'This is a test comment!');
 
 
 /*
@@ -324,11 +342,11 @@ EXERCISE 2: What's the Difference?
 ----------------------------------
 Explain the difference between PUT and PATCH:
 
-PUT: _______________
-PATCH: _______________
+PUT: Replaces the entire resource with new data. You must send all fields.
+PATCH: Updates only the specified fields, leaving others unchanged.
 
-When would you use PUT? _______________
-When would you use PATCH? _______________
+When would you use PUT? When you want to replace an entire resource.
+When would you use PATCH? When you want to update just one or a few fields.
 */
 
 
@@ -336,11 +354,15 @@ When would you use PATCH? _______________
 EXERCISE 3: Implement Debounce Function
 ---------------------------------------
 Create a reusable debounce function.
+*/
 
 function debounce(func, delay) {
     let timeout;
     return function(...args) {
-        // Your code here
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
     };
 }
 
@@ -348,4 +370,9 @@ function debounce(func, delay) {
 const debouncedSearch = debounce((query) => {
     console.log('Searching:', query);
 }, 300);
-*/
+
+// Test:
+debouncedSearch('hello');
+debouncedSearch('hello world');
+debouncedSearch('hello world test');
+console.log('Debounce test complete - only last call will execute');
