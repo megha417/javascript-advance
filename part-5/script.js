@@ -254,6 +254,7 @@ console.log('Part 5 loaded! Study the code above, then try the exercises below.'
 EXERCISE 1: Will This Catch the Error?
 --------------------------------------
 Will the error be caught? Why or why not?
+*/
 
 try {
     setTimeout(() => {
@@ -263,9 +264,9 @@ try {
     console.log('Caught:', error.message);
 }
 
-Answer: _______________
-Why: _______________
-*/
+// Answer: NO - The error will NOT be caught!
+// Why: setTimeout callback runs asynchronously, outside the try-catch block.
+// The try-catch only catches synchronous errors, not async ones.
 
 
 /*
@@ -273,28 +274,54 @@ EXERCISE 2: Create a Safe Parser
 --------------------------------
 Create a function that safely parses JSON.
 Return null if parsing fails instead of throwing.
+*/
 
 function safeJsonParse(str) {
-    // Your code here
-    // Return parsed object or null if invalid
+    try {
+        return JSON.parse(str);
+    } catch (error) {
+        return null;
+    }
 }
 
 // Test:
 console.log(safeJsonParse('{"a": 1}'));  // {a: 1}
 console.log(safeJsonParse('invalid'));   // null
-*/
+console.log(safeJsonParse('{"b": 2}'));  // {b: 2}
 
 
 /*
 EXERCISE 3: Create Your Own Error Class
 ---------------------------------------
 Create a custom error class called "InvalidEmailError".
+*/
 
 class InvalidEmailError extends Error {
-    // Your code here
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidEmailError';
+    }
 }
 
 function validateEmail(email) {
-    // Throw InvalidEmailError if email doesn't contain @
+    if (!email.includes('@')) {
+        throw new InvalidEmailError(`Invalid email: ${email}`);
+    }
+    return true;
 }
-*/
+
+// Test:
+try {
+    validateEmail('test@example.com');  // OK
+    console.log('Valid email!');
+} catch (error) {
+    if (error instanceof InvalidEmailError) {
+        console.log('Custom error caught:', error.message);
+    }
+}
+
+try {
+    validateEmail('invalid-email');  // Will throw
+} catch (error) {
+    console.log('Caught invalid email:', error.message);
+}
