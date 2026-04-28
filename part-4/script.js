@@ -240,43 +240,63 @@ EXERCISE 1: Why Does This Fail?
 -------------------------------
 This code tries to save an array but doesn't work right.
 What's wrong? How do you fix it?
+*/
 
 const colors = ['red', 'green', 'blue'];
 localStorage.setItem('colors', colors);
 
 const saved = localStorage.getItem('colors');
-console.log(saved);        // What does this print?
-console.log(saved[0]);     // What does this print?
+console.log(saved);        // Prints: "red,green,blue" (string, not array)
+console.log(saved[0]);     // Prints: "r" (first character of string)
 
-Fix: _______________
-*/
+// Fix: Use JSON.stringify() when saving and JSON.parse() when retrieving
+const colorsFixed = ['red', 'green', 'blue'];
+localStorage.setItem('colorsFixed', JSON.stringify(colorsFixed));
+
+const savedFixed = JSON.parse(localStorage.getItem('colorsFixed'));
+console.log(savedFixed);        // Prints: ["red", "green", "blue"]
+console.log(savedFixed[0]);     // Prints: "red"
 
 
 /*
 EXERCISE 2: Build a To-Do List
 ------------------------------
 Create functions to manage a to-do list in localStorage.
+*/
 
 let todos = [];
 
 function loadTodos() {
-    // Load todos from localStorage
-    // Remember to JSON.parse!
+    const stored = localStorage.getItem('todos');
+    if (stored) {
+        todos = JSON.parse(stored);
+    }
+    return todos;
 }
 
 function saveTodos() {
-    // Save todos to localStorage
-    // Remember to JSON.stringify!
+    localStorage.setItem('todos', JSON.stringify(todos));
 }
 
 function addTodo(text) {
-    // Add new todo and save
+    todos.push(text);
+    saveTodos();
+    console.log('Added todo:', text);
 }
 
 function removeTodo(index) {
-    // Remove todo at index and save
+    const removed = todos.splice(index, 1)[0];
+    saveTodos();
+    console.log('Removed todo:', removed);
 }
-*/
+
+// Test:
+loadTodos();
+addTodo('Learn JavaScript');
+addTodo('Build a project');
+console.log('Todos:', todos);
+removeTodo(0);
+console.log('Todos after remove:', todos);
 
 
 /*
@@ -284,16 +304,20 @@ EXERCISE 3: Theme Preference
 ----------------------------
 Save user's preferred theme (light/dark) to localStorage.
 Load it when the page opens.
+*/
 
 function setTheme(theme) {
-    // Save theme to localStorage
-    // Apply theme to body
+    localStorage.setItem('theme', theme);
+    document.body.className = theme;
+    console.log('Theme set to:', theme);
 }
 
 function loadTheme() {
-    // Load theme from localStorage
-    // Apply it
+    const theme = localStorage.getItem('theme') || 'light';
+    document.body.className = theme;
+    console.log('Loaded theme:', theme);
+    return theme;
 }
 
 // Call loadTheme on page load
-*/
+loadTheme();
