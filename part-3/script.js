@@ -245,12 +245,16 @@ EXERCISE 1: Fetch Comments
 --------------------------
 Fetch comments for post ID 1.
 API: https://jsonplaceholder.typicode.com/posts/1/comments
+*/
 
 async function fetchComments() {
-    // Your code here
-    // Log how many comments were fetched
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts/1/comments');
+    const comments = await response.json();
+    console.log(`Fetched ${comments.length} comments`);
+    return comments;
 }
-*/
+
+fetchComments();
 
 
 /*
@@ -262,17 +266,40 @@ https://jsonplaceholder.typicode.com/users/999
 Hint: Check response.ok before calling response.json()
 */
 
+async function fetchUser() {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users/999');
+    
+    if (!response.ok) {
+        console.log(`Error: ${response.status} - ${response.statusText}`);
+        return null;
+    }
+    
+    const user = await response.json();
+    console.log('User:', user);
+    return user;
+}
+
+fetchUser();
+
 
 /*
 EXERCISE 3: Fetch Multiple Resources
 ------------------------------------
 Use Promise.all to fetch both users AND posts at the same time.
 Log the count of each.
+*/
 
 async function fetchBoth() {
     const [usersRes, postsRes] = await Promise.all([
-        // Your code here
+        fetch('https://jsonplaceholder.typicode.com/users'),
+        fetch('https://jsonplaceholder.typicode.com/posts')
     ]);
-    // Your code here
+    
+    const users = await usersRes.json();
+    const posts = await postsRes.json();
+    
+    console.log(`Users: ${users.length}, Posts: ${posts.length}`);
+    return { users: users.length, posts: posts.length };
 }
-*/
+
+fetchBoth();
